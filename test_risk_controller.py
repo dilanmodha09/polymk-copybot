@@ -37,8 +37,8 @@ class TestRiskController:
         """Test wallet utilization check exceeding limit."""
         result = self.controller.check_wallet_utilization(
             current_balance=5000.0,
-            total_position_value=3000.0,  # 60% utilized
-            proposed_trade_size=2000.0    # Would be 100% utilized (exceeds 80%)
+            total_position_value=3000.0,  # Currently 37.5% utilized (3000/8000)
+            proposed_trade_size=4000.0    # Would be 87.5% utilized (7000/8000 > 80%)
         )
         
         assert result is False
@@ -145,13 +145,13 @@ class TestRiskController:
         
         wallet_address = "0x123"
         
-        # Create balance from 24 hours ago: $10,000
+        # Create balance from 23 hours ago: $10,000
         past_balance = WalletBalance(
             wallet_address=wallet_address,
             usdc_balance=10000.0,
             positions_value=0.0,
             total_value=10000.0,
-            timestamp=datetime.utcnow() - timedelta(hours=24)
+            timestamp=datetime.utcnow() - timedelta(hours=23)
         )
         session.add(past_balance)
         
@@ -177,13 +177,13 @@ class TestRiskController:
         
         wallet_address = "0x456"
         
-        # Create balance from 24 hours ago: $10,000
+        # Create balance from 23 hours ago: $10,000
         past_balance = WalletBalance(
             wallet_address=wallet_address,
             usdc_balance=10000.0,
             positions_value=0.0,
             total_value=10000.0,
-            timestamp=datetime.utcnow() - timedelta(hours=24)
+            timestamp=datetime.utcnow() - timedelta(hours=23)
         )
         session.add(past_balance)
         
